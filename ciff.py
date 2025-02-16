@@ -199,7 +199,7 @@ class CIFF:
                 # decode the bytes as 4 characters
                 new_ciff.magic = magic.decode('ascii')
                 # TODO: the magic must be "CIFF". If not, raise Exception
-                if new_ciff.magic != "CIFF":
+                if new_ciff.magic != 'CIFF':
                     new_ciff.is_valid = False
                     raise Exception("IncorrectFileFormat")
 
@@ -239,7 +239,7 @@ class CIFF:
                 # read the width
                 width = ciff_file.read(8)
                 # TODO: check if width contains 8 bytes
-                if width != 8:
+                if len(width) != 8:
                     raise Exception("IncorrectWidthSize")
                 bytes_read += 8
                 # interpret the bytes as an 8-byte-long integer
@@ -256,7 +256,7 @@ class CIFF:
                 # read the height
                 # TODO: check if height contains 8 bytes
                 height = ciff_file.read(8)
-                if height != 8:
+                if len(height) != 8:
                     raise Exception("IncorrectHeightSize")
                 bytes_read += 8
                 # interpret the bytes as an 8-byte-long integer
@@ -278,7 +278,7 @@ class CIFF:
                 caption = ""
                 c = ciff_file.read(1)
                 # TODO: check if c contains 1 byte
-                if c != 1:
+                if len(c) != 1:
                     raise Exception("IncorrectCaptionSize")
                 bytes_read += 1
                 char = c.decode('ascii')
@@ -289,7 +289,7 @@ class CIFF:
                     # read next character
                     c = ciff_file.read(1)
                     # TODO: check if c contains 1 byte
-                    if c != 1:
+                    if len(c) != 1:
                         raise Exception("IncorrectCaption")
                     bytes_read += 1
                     char = c.decode('ascii')
@@ -323,7 +323,7 @@ class CIFF:
                 # all tags must end with '\0'
                 # TODO: check the end of each tag for the '\0'
                 for tag in tags:
-                    if tag[tag.len - 1] != '\0':
+                    if tag[len(tag) - 1] != '\0':
                         raise Exception("IncorrectTag")
 
                 new_ciff.tags = tags
@@ -332,7 +332,7 @@ class CIFF:
                 while bytes_read < new_ciff.header_size + new_ciff.content_size:
                     c = ciff_file.read(3)
                     # TODO: check if c contains 3 bytes
-                    if c != 3:
+                    if len(c) != 3:
                         raise Exception("IncorrectPixel")
                     bytes_read += 3
                     pixel = struct.unpack("BBB", c)
@@ -341,7 +341,7 @@ class CIFF:
                 # we should have reached the end of the file
                 # TODO: try to read a byte. If successful, raise Exception
                 illegalbyte = ciff_file.read(1)
-                if illegalbyte != 0:
+                if len(illegalbyte) != 0:
                     raise Exception("IncorrectPixelData")
 
         except Exception as e:
